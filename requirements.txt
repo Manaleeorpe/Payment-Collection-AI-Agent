@@ -6,3 +6,4 @@ requests
 tenacity
 fastapi
 uvicorn[standard]
+streamlit
