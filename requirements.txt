@@ -4,3 +4,5 @@ pydantic>=2.0
 python-dotenv
 requests
 tenacity
+fastapi
+uvicorn[standard]
