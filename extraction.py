@@ -89,7 +89,10 @@ def extract(
         if raw_card is not None and result.card_number is None:
             result = result.model_copy(update={"card_number": raw_card})
         return result, None
-    except Exception:
+    except Exception as e:
+        import traceback
+        print(f"[extraction] LLM call failed: {e}", flush=True)
+        traceback.print_exc()
         empty = TurnExtraction()
         if raw_card:
             empty = empty.model_copy(
