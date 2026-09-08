@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import os
 import re
 from datetime import date
 from decimal import Decimal
 from typing import Literal
 
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
+
+load_dotenv()
 
 # Matches digit sequences (with optional spaces/hyphens) long enough to be a card number.
 # Card numbers are extracted BEFORE the LLM call so raw PANs never reach the upstream model.
@@ -62,9 +66,11 @@ class TurnExtraction(BaseModel):
     ] = "other"
 
 
-_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0).with_structured_output(
-    TurnExtraction
-)
+_llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0,
+    api_key=os.getenv("OPENAI_API_KEY"),
+).with_structured_output(TurnExtraction)
 
 
 def extract(
